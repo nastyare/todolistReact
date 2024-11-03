@@ -1,0 +1,446 @@
+$background-color: #1B1A17;
+$blocks-hover-color: #242320;
+$elements-color: #242320;
+$border-color: #A35709;
+$border-hover: #FF8303;
+$text-color: #F0E3CA;
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../src/fonts/Roboto.ttf");
+}
+
+
+* {
+    font-family: Roboto, sans-serif;
+    font-weight: 400;
+    background-color: $background-color;
+    box-sizing: border-box;
+}
+
+
+button {
+    border-radius: 8px;
+    border: 2px solid $border-color;
+    background-color: $background-color;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: $blocks-hover-color;
+    border-color: $border-hover;
+}
+
+p,
+h3 {
+    color: $text-color;
+}
+
+
+@mixin buttons-images {
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+@mixin colors {
+    background-color: $elements-color;
+    border: 1px solid $border-color;
+}
+
+.main-section {
+    padding: 20px 40px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.base-form {
+    display: flex;
+    flex-direction: row;
+    padding: 23px 22px;
+    height: 150px;
+    justify-content: center;
+
+    .input-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 90%;
+
+        & .input-element {
+            @include colors;
+            height: 48px;
+            color: $text-color;
+            width: 100%;
+            font-size: 14px;
+            border-radius: 8px;
+        }
+    }
+
+    .add-button {
+        margin-left: 10px;
+        width: 10%;
+        background-image: url('../src/assets/add-button.svg');
+        @include buttons-images
+    }
+
+}
+
+
+.no-tasks {
+    position: relative;
+    top: 40%;
+    left: 45%;
+    transform: translate(10%, 30%);
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0px;
+
+    ::before,
+    ::after {
+        content: "";
+        display: block;
+        width: 100px;
+        height: 1px;
+        background-color: $elements-color;
+        border: 3px solid $border-color;
+    }
+
+    p {
+        font-size: 24px;
+    }
+}
+
+
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 32px;
+    padding: 0px 20px;
+    gap: 10px;
+
+    & .task-item {
+        @include colors;
+        width: 100%;
+        position: relative;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px 16px;
+        position: relative;
+        margin-bottom: 10px;
+        border-radius: 8px;
+
+        h3,
+        p {
+            margin: 0;
+            width: 80%;
+            background-color: $elements-color;
+        }
+
+        p {
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        .delete-button {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-image: url("../src/assets/delete-button.svg");
+            background-size: 40%;
+            @include buttons-images;
+            width: 3%;
+            height: 50%;
+        }
+
+        &.expanded {
+            margin-bottom: 60px;
+        }
+    }
+}
+
+.task-menu {
+    display: flex;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    justify-content: flex-end;
+    gap: 5px;
+    margin-top: 10px;
+    padding-top: 5px;
+
+    button {
+        width: 35px;
+        height: 35px;
+        font-size: 10px;
+        @include buttons-images;
+        background-color: $elements-color;
+
+        &.share-button {
+            background-image: url('../src/assets/share-button.svg');
+        }
+
+        &.info-button {
+            background-image: url('../src/assets/info-button.svg');
+        }
+
+        &.edit-button {
+            background-image: url('../src/assets/edit-button.svg');
+        }
+    }
+}
+
+
+.background {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.delete-window {
+    margin: 15% auto;
+    padding: 20px;
+    width: 30%;
+    height: 180px;
+    text-align: center;
+    border-top: 6px solid $border-color;
+
+    p {
+        font-size: 30px;
+    }
+
+    button {
+        margin-right: 10px;
+        height: 30px;
+        width: 30%;
+        font-size: 16px;
+    }
+}
+
+
+.share-section {
+    justify-content: center;
+
+    .menu {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        width: 90%;
+        height: 100px;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 30px;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        list-style: none;
+        border: 1px solid $border-color;
+
+        li {
+            cursor: pointer;
+        }
+    }
+}
+
+
+.edit-section {
+    .edit {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 5%;
+        right: 5%;
+        top: 30%;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 10px;
+        background-color: $background-color;
+
+        .edit-elements {
+            display: flex;
+            width: 100%;
+            height: 80%;
+            margin-top: 10px auto;
+            flex-direction: column;
+            align-items: center;
+
+            .edit-element {
+                width: 90%;
+                padding: 10px;
+                color: $text-color;
+                @include colors;
+                text-align: left;
+                border-radius: 8px;
+                vertical-align: top;
+                box-sizing: border-box;
+            }
+
+            .title-element {
+                height: 20%;
+                margin-bottom: 10px;
+            }
+
+            .description-element {
+                height: 80%;
+                resize: none;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            width: 30%;
+            margin: 10px auto;
+
+            button {
+                padding: 10px 15px;
+            }
+        }
+    }
+}
+
+
+@media screen and (min-width: 300px) and (max-width: 480px) {
+
+    h3,
+    p {
+        font-size: 20px;
+    }
+
+    .main-section {
+        padding: 0px;
+    }
+
+    .base-form {
+        width: 100%;
+        margin: 0;
+
+        .input-section {
+            height: 100px;
+            width: 75%;
+
+        }
+
+        .add-button {
+            width: 25%;
+        }
+
+    }
+
+    .delete-window {
+        width: 60%;
+        padding: 10px;
+    }
+
+    .tasks-list {
+        .task-item {
+            .delete-button {
+                right: 15px;
+                width: 10%;
+            }
+        }
+    }
+
+    .edit-section {
+        .edit {
+            .buttons {
+                width: 70%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 481px) and (max-width: 1000px) {
+
+    .delete-window {
+        width: 50%;
+    }
+
+    .tasks-list {
+        .task-item {
+            .delete-button {
+                right: 15px;
+                width: 5%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 2000px) and (max-width: 2600px) {
+    .base-form {
+        width: 80%;
+        margin: 10px auto;
+        display: flex;
+        height: 250px;
+
+        .input-section {
+            .input-element {
+                height: 45%;
+            }
+        }
+    }
+
+    h3 {
+        font-size: 36px;
+    }
+
+    p {
+        font-size: 30px;
+    }
+
+    ul {
+        margin: 5px auto;
+        width: 80%;
+        height: auto;
+
+        & .task-item {
+            height: 100px;
+        }
+    }
+
+    .task-menu {
+        button {
+            width: 50px;
+            height: 50px;
+        }
+    }
+
+    .share-section {
+        .menu {
+            height: 150px;
+            width: 50%;
+        }
+    }
+
+    .delete-window {
+        height: 250px;
+        width: 25%;
+
+        p {
+            font-size: 40px;
+        }
+
+        button {
+            height: 40px;
+            width: 20%;
+        }
+    }
+
+    .edit-section {
+        .edit {
+            top: 50%;
+            right: 15%;
+            left: 15%;
+
+            & .edit-elements {
+                height: 90%;
+            }
+        }
+    }
+}
