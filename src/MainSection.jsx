@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import ShareModal from './modals/ShareModal';
 import EditTaskModal from './modals/EditTaskModal';
+import TaskItem from './TaskItem';
 import { saveTasksToLocalStorage, deleteTaskFromLocalStorage, loadTasksFromLocalStorage } from './storage/LocalStorage';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 Modal.setAppElement('#root');
 
 const MainSection = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [tasks, setTasks] = useState(loadTasksFromLocalStorage()); 
-    const [noTasksVisible, setNoTasksVisible] = useState(tasks.length === 0); 
+    const [tasks, setTasks] = useState(loadTasksFromLocalStorage());
+    const [noTasksVisible, setNoTasksVisible] = useState(tasks.length === 0);
     const [isDeleteWindowOpen, setDeleteWindowOpen] = useState(false);
     const [taskIdToDelete, setTaskIdToDelete] = useState(null);
     const [openedTaskId, setOpenedTaskId] = useState(null);
@@ -22,22 +23,22 @@ const MainSection = () => {
 
     useEffect(() => {
         saveTasksToLocalStorage(tasks);
-        setNoTasksVisible(tasks.length === 0); 
+        setNoTasksVisible(tasks.length === 0);
     }, [tasks]);
 
     const addTask = () => {
         const trimmedTitle = title.trim();
         const trimmedDescription = description.trim();
-    
+
         if (trimmedTitle && trimmedDescription) {
-            const taskId = Date.now(); 
+            const taskId = Date.now();
             const newTask = { id: taskId, title: trimmedTitle, description: trimmedDescription };
-    
+
             setTasks(prevTasks => [...prevTasks, newTask]);
-    
+
             setTitle('');
             setDescription('');
-    
+
             setNoTasksVisible(false);
         } else {
             alert("Должны быть заполнены и название, и описание");
@@ -50,6 +51,8 @@ const MainSection = () => {
         }
     };
 
+
+    // реализация окна удаления
     const openDelete = (taskId) => {
         setTaskIdToDelete(taskId);
         setDeleteWindowOpen(true);
@@ -66,17 +69,20 @@ const MainSection = () => {
         setTaskIdToDelete(null);
     };
 
+
+    // меню задачи 
     const toggleTaskMenu = (taskId) => {
         if (openedTaskId === taskId) {
             setOpenedTaskId(null);
         } else {
             setOpenedTaskId(taskId);
-            // Выбор задачи для передачи в ShareModal
             const task = tasks.find(task => task.id === taskId);
             setSelectedTask(task);
         }
     };
 
+
+    // окно для поделиться 
     const openShareModal = (task) => {
         setSelectedTask(task);
         setShowShareModal(true);
@@ -86,32 +92,34 @@ const MainSection = () => {
         setShowShareModal(false);
     };
 
+
+    // окно для редактирования 
     const handleEditClick = (task) => {
         setCurrentTask(task);
-        setEditModalOpen(true); 
+        setEditModalOpen(true);
     };
 
     const handleSave = (newTitle, newDescription) => {
         setTasks(prevTasks => {
-            const updatedTasks = prevTasks.map(task => 
+            const updatedTasks = prevTasks.map(task =>
                 task.title === currentTask.title ? { ...task, title: newTitle, description: newDescription } : task
             );
-            saveTasksToLocalStorage(updatedTasks); 
-            return updatedTasks; ч
+            saveTasksToLocalStorage(updatedTasks);
+            return updatedTasks;
         });
-        setEditModalOpen(false); 
+        setEditModalOpen(false);
     };
 
     const onDragEnd = (result) => {
         if (!result.destination) {
-            return; 
+            return;
         }
 
-        const reorderedTasks = Array.from(tasks); 
-        const [movedTask] = reorderedTasks.splice(result.source.index, 1); 
-        reorderedTasks.splice(result.destination.index, 0, movedTask); 
+        const reorderedTasks = Array.from(tasks);
+        const [movedTask] = reorderedTasks.splice(result.source.index, 1);
+        reorderedTasks.splice(result.destination.index, 0, movedTask);
 
-        setTasks(reorderedTasks); 
+        setTasks(reorderedTasks);
     };
 
     return (
@@ -152,32 +160,16 @@ const MainSection = () => {
                                 ref={provided.innerRef}
                             >
                                 {tasks.map((task, index) => (
-                                    <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
-                                        {(provided) => (
-                                            <li
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                className={`task-item ${openedTaskId === task.id ? 'expanded' : ''}`}
-                                            >
-                                                <div 
-                                                    onClick={() => toggleTaskMenu(task.id)}
-                                                    className={`task-content ${openedTaskId === task.id ? 'expanded' : ''}`}
-                                                >
-                                                    <h3>{task.title}</h3>
-                                                    <p>{task.description.length > 80 ? task.description.substring(0, 80) + '...' : task.description}</p>
-                                                </div>
-                                                {openedTaskId === task.id && (
-                                                    <div className="task-menu">
-                                                        <button className="share-button" onClick={() => openShareModal(task)}></button>
-                                                        <button className="info-button"></button>
-                                                        <button className="edit-button" onClick={() => handleEditClick(task)}></button>
-                                                    </div>
-                                                )}
-                                                <button className="delete-button" onClick={() => openDelete(task.id)}></button>
-                                            </li>
-                                        )}
-                                    </Draggable>
+                                    <TaskItem
+                                        key={task.id}
+                                        task={task}
+                                        index={index}
+                                        openedTaskId={openedTaskId}
+                                        toggleTaskMenu={toggleTaskMenu}
+                                        openShareModal={openShareModal}
+                                        handleEditClick={handleEditClick}
+                                        openDelete={openDelete}
+                                    />
                                 ))}
                                 {provided.placeholder}
                             </ul>
@@ -186,8 +178,8 @@ const MainSection = () => {
                 </DragDropContext>
             )}
 
-            <Modal 
-                isOpen={isDeleteWindowOpen} 
+            <Modal
+                isOpen={isDeleteWindowOpen}
                 onRequestClose={onCancel}
                 className="delete-window"
                 overlayClassName="background"

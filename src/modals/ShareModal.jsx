@@ -22,14 +22,14 @@ const ShareModal = ({ onClose, title, fullDescription }) => {
 
     const handleClickOutside = (event) => {
         if (modalRef.current && !modalRef.current.contains(event.target)) {
-            onClose(); // Закрываем модальное окно
+            onClose(); 
         }
     };
 
     useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside); // Добавляем обработчик событий при монтировании
+        document.addEventListener('mousedown', handleClickOutside); 
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside); // Удаляем обработчик при размонтировании
+            document.removeEventListener('mousedown', handleClickOutside); 
         };
     }, []);
 
@@ -43,7 +43,7 @@ const ShareModal = ({ onClose, title, fullDescription }) => {
                                 className={image.class}
                                 src={image.src}
                                 alt={image.alt}
-                                onClick={image.class === 'copy' ? handleCopy : undefined} // Обработка клика для кнопки "Копировать"
+                                onClick={image.class === 'copy' ? handleCopy : undefined} 
                             />
                         </li>
                     ))}

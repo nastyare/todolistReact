@@ -6,20 +6,20 @@ const EditTaskModal = ({ onClose, taskTitle, taskDescription, onSave }) => {
     const modalRef = useRef();
 
     const handleSave = () => {
-        onSave(title, description); // Сохраняем изменения
-        onClose(); // Закрываем модальное окно
+        onSave(title, description); 
+        onClose();
     };
 
     const handleClickOutside = (event) => {
         if (modalRef.current && !modalRef.current.contains(event.target)) {
-            onClose(); // Закрываем модальное окно
+            onClose(); 
         }
     };
 
     useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside); // Добавляем обработчик событий при монтировании
+        document.addEventListener('mousedown', handleClickOutside); 
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside); // Удаляем обработчик при размонтировании
+            document.removeEventListener('mousedown', handleClickOutside); 
         };
     }, []);
 
@@ -31,13 +31,13 @@ const EditTaskModal = ({ onClose, taskTitle, taskDescription, onSave }) => {
                         name="edit-title-field"
                         className="title-element edit-element"
                         value={title}
-                        onChange={(e) => setTitle(e.target.value)} // Обновляем название
+                        onChange={(e) => setTitle(e.target.value)}
                     />
                     <textarea
                         name="edit-description-field"
                         className="description-element edit-element"
                         value={description}
-                        onChange={(e) => setDescription(e.target.value)} // Обновляем описание
+                        onChange={(e) => setDescription(e.target.value)} 
                     />
                 </div>
                 <div className="buttons">
