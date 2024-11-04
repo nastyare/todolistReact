@@ -47,7 +47,7 @@ $TEXT_COLOR: #F0E3CA;
     .add-button {
         margin-left: 10px;
         width: 10%;
-        background-image: url('../src/assets/add-button.svg');
+        background-image: url('../src/assets/images/add-button.svg');
         @include buttons-images
     }
 
@@ -116,7 +116,7 @@ $TEXT_COLOR: #F0E3CA;
             right: 30px;
             top: 50%;
             transform: translateY(-50%);
-            background-image: url("../src/assets/delete-button.svg");
+            background-image: url("../src/assets/images/delete-button.svg");
             background-size: 40%;
             @include buttons-images;
             width: 3%;
@@ -147,15 +147,15 @@ $TEXT_COLOR: #F0E3CA;
         background-color: $ELEMENTS_COLOR;
 
         &.share-button {
-            background-image: url('../src/assets/share-button.svg');
+            background-image: url('../src/assets/images/share-button.svg');
         }
 
         &.info-button {
-            background-image: url('../src/assets/info-button.svg');
+            background-image: url('../src/assets/images/info-button.svg');
         }
 
         &.edit-button {
-            background-image: url('../src/assets/edit-button.svg');
+            background-image: url('../src/assets/images/edit-button.svg');
         }
     }
 }
@@ -178,6 +178,7 @@ $TEXT_COLOR: #F0E3CA;
     height: 180px;
     text-align: center;
     border-top: 6px solid $BORDER_COLOR;
+    background-color: $BACKGROUND_COLOR;
 
     p {
         font-size: 30px;
@@ -199,6 +200,8 @@ $TEXT_COLOR: #F0E3CA;
         display: flex;
         position: fixed;
         bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
         width: 90%;
         height: 100px;
         justify-content: space-between;
@@ -208,6 +211,7 @@ $TEXT_COLOR: #F0E3CA;
         border-top-right-radius: 20px;
         list-style: none;
         border: 1px solid $BORDER_COLOR;
+        background-color: $BACKGROUND_COLOR;
 
         li {
             cursor: pointer;

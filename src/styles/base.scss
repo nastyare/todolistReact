@@ -6,7 +6,7 @@ $TEXT_COLOR: #F0E3CA;
 
 @font-face {
     font-family: "Roboto";
-    src: url("../src/fonts/Roboto.ttf");
+    src: url("../src/assets/fonts/Roboto.ttf");
 }
 
 * {
@@ -24,6 +24,7 @@ button {
     border-radius: 8px;
     border: 2px solid $BORDER_COLOR;
     background-color: $BACKGROUND_COLOR;
+    color: $TEXT_COLOR;
     cursor: pointer;
 }
 
