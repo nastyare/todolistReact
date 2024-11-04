@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'; 
 import Modal from 'react-modal';
-import ShareModal from './modals/ShareModal';
-import EditTaskModal from './modals/EditTaskModal';
+import ShareModal from '../modals/ShareModal';
+import EditTaskModal from '../modals/EditTaskModal';
 import TaskItem from './TaskItem';
-import { saveTasksToLocalStorage, deleteTaskFromLocalStorage, loadTasksFromLocalStorage } from './storage/LocalStorage';
+import { deleteTaskFromLocalStorage } from '../storage/LocalStorage';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { addTask } from './AddTask';
+import EditTask from './EditTask';
 
 Modal.setAppElement('#root');
 
 const MainSection = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [tasks, setTasks] = useState(loadTasksFromLocalStorage());
+    const { tasks, setTasks, handleSave } = EditTask();
     const [noTasksVisible, setNoTasksVisible] = useState(tasks.length === 0);
     const [isDeleteWindowOpen, setDeleteWindowOpen] = useState(false);
     const [taskIdToDelete, setTaskIdToDelete] = useState(null);
@@ -22,37 +24,17 @@ const MainSection = () => {
     const [currentTask, setCurrentTask] = useState({ title: '', description: '' });
 
     useEffect(() => {
-        saveTasksToLocalStorage(tasks);
         setNoTasksVisible(tasks.length === 0);
     }, [tasks]);
 
-    const addTask = () => {
-        const trimmedTitle = title.trim();
-        const trimmedDescription = description.trim();
-
-        if (trimmedTitle && trimmedDescription) {
-            const taskId = Date.now();
-            const newTask = { id: taskId, title: trimmedTitle, description: trimmedDescription };
-
-            setTasks(prevTasks => [...prevTasks, newTask]);
-
-            setTitle('');
-            setDescription('');
-
-            setNoTasksVisible(false);
-        } else {
-            alert("Должны быть заполнены и название, и описание");
-        }
-    };
 
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
-            addTask();
+            addTask(title, description, setTasks, setTitle, setDescription, setNoTasksVisible);
         }
     };
 
-
-    // реализация окна удаления
+    // окно удаления 
     const openDelete = (taskId) => {
         setTaskIdToDelete(taskId);
         setDeleteWindowOpen(true);
@@ -99,16 +81,6 @@ const MainSection = () => {
         setEditModalOpen(true);
     };
 
-    const handleSave = (newTitle, newDescription) => {
-        setTasks(prevTasks => {
-            const updatedTasks = prevTasks.map(task =>
-                task.title === currentTask.title ? { ...task, title: newTitle, description: newDescription } : task
-            );
-            saveTasksToLocalStorage(updatedTasks);
-            return updatedTasks;
-        });
-        setEditModalOpen(false);
-    };
 
     const onDragEnd = (result) => {
         if (!result.destination) {
@@ -144,7 +116,7 @@ const MainSection = () => {
                         onKeyPress={handleKeyPress}
                     />
                 </div>
-                <button className="add-button" onClick={addTask}></button>
+                <button className="add-button" onClick={() => addTask(title, description, setTasks, setTitle, setDescription, setNoTasksVisible)}></button>
             </div>
             {noTasksVisible ? (
                 <div className="no-tasks">
@@ -202,7 +174,7 @@ const MainSection = () => {
                     onClose={() => setEditModalOpen(false)}
                     taskTitle={currentTask.title}
                     taskDescription={currentTask.description}
-                    onSave={handleSave}
+                    onSave={(newTitle, newDescription) => handleSave(currentTask, newTitle, newDescription)}
                 />
             )}
         </div>
