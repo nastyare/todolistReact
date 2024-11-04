@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import ShareModal from './ShareModal';
-import EditTaskModal from './EditTaskModal';
-import { saveTasksToLocalStorage, deleteTaskFromLocalStorage, loadTasksFromLocalStorage } from './LocalStorage';
+import ShareModal from './modals/ShareModal';
+import EditTaskModal from './modals/EditTaskModal';
+import { saveTasksToLocalStorage, deleteTaskFromLocalStorage, loadTasksFromLocalStorage } from './storage/LocalStorage';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 Modal.setAppElement('#root');
@@ -88,7 +88,7 @@ const MainSection = () => {
 
     const handleEditClick = (task) => {
         setCurrentTask(task);
-        setEditModalOpen(true); // Открываем модальное окно редактирования
+        setEditModalOpen(true); 
     };
 
     const handleSave = (newTitle, newDescription) => {
@@ -96,23 +96,22 @@ const MainSection = () => {
             const updatedTasks = prevTasks.map(task => 
                 task.title === currentTask.title ? { ...task, title: newTitle, description: newDescription } : task
             );
-            saveTasksToLocalStorage(updatedTasks); // Сохраняем обновлённые задачи в локальное хранилище
-            return updatedTasks; // Возвращаем обновлённое состояние задач
+            saveTasksToLocalStorage(updatedTasks); 
+            return updatedTasks; ч
         });
-        setEditModalOpen(false); // Закрываем модальное окно
+        setEditModalOpen(false); 
     };
 
     const onDragEnd = (result) => {
-        // Проверяем, есть ли результаты перетаскивания
         if (!result.destination) {
-            return; // Если задача была сброшена, ничего не делаем
+            return; 
         }
 
-        const reorderedTasks = Array.from(tasks); // Копируем текущий массив задач
-        const [movedTask] = reorderedTasks.splice(result.source.index, 1); // Удаляем перемещенную задачу
-        reorderedTasks.splice(result.destination.index, 0, movedTask); // Вставляем задачу в новое место
+        const reorderedTasks = Array.from(tasks); 
+        const [movedTask] = reorderedTasks.splice(result.source.index, 1); 
+        reorderedTasks.splice(result.destination.index, 0, movedTask); 
 
-        setTasks(reorderedTasks); // Обновляем состояние с новыми позициями
+        setTasks(reorderedTasks); 
     };
 
     return (

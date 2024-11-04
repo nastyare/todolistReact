@@ -1,6 +1,7 @@
 import React from 'react';
 import MainSection from './MainSection'; 
-import './main.scss';
+import './styles/sections.scss';
+import './styles/base.scss';
 
 function App() { 
   return (
