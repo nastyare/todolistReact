@@ -4,11 +4,11 @@ const ShareModal = ({ onClose, title, fullDescription }) => {
     const modalRef = useRef(); 
 
     const images = [
-        { src: '../src/assets/copy.svg', alt: 'Copy', class: 'copy' },
-        { src: '../src/assets/telegram.svg', alt: 'Telegram', class: 'telegram' },
-        { src: '../src/assets/vk.svg', alt: 'VK', class: 'vk' },
-        { src: '../src/assets/whatsapp.svg', alt: 'WhatsApp', class: 'whatsapp' },
-        { src: '../src/assets/facebook.svg', alt: 'Facebook', class: 'facebook' }
+        { src: '../src/assets/images/copy.svg', alt: 'Copy', class: 'copy' },
+        { src: '../src/assets/images/telegram.svg', alt: 'Telegram', class: 'telegram' },
+        { src: '../src/assets/images/vk.svg', alt: 'VK', class: 'vk' },
+        { src: '../src/assets/images/whatsapp.svg', alt: 'WhatsApp', class: 'whatsapp' },
+        { src: '../src/assets/images/facebook.svg', alt: 'Facebook', class: 'facebook' }
     ];
 
     const handleCopy = () => {
