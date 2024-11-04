@@ -1,0 +1,178 @@
+$BACKGROUND_COLOR: #1B1A17;
+$BLOCKS_HOVER_COLOR: #242320;
+$BORDER_COLOR: #A35709;
+$BORDER_HOVER: #FF8303;
+$TEXT_COLOR: #F0E3CA;
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../src/fonts/Roboto.ttf");
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Roboto, sans-serif;
+    font-weight: 400;
+    background-color: $BACKGROUND_COLOR;
+}
+
+
+button {
+    border-radius: 8px;
+    border: 2px solid $BORDER_COLOR;
+    background-color: $BACKGROUND_COLOR;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: $BLOCKS_HOVER_COLOR;
+    border-color: $BORDER_HOVER;
+}
+
+p,
+h3 {
+    color: $TEXT_COLOR;
+}
+
+
+@media screen and (min-width: 300px) and (max-width: 480px) {
+
+    h3,
+    p {
+        font-size: 20px;
+    }
+
+    .main-section {
+        padding: 0px;
+    }
+
+    .base-form {
+        width: 100%;
+        margin: 0;
+
+        .input-section {
+            height: 100px;
+            width: 75%;
+
+        }
+
+        .add-button {
+            width: 25%;
+        }
+
+    }
+
+    .delete-window {
+        width: 60%;
+        padding: 10px;
+    }
+
+    .tasks-list {
+        .task-item {
+            .delete-button {
+                right: 15px;
+                width: 10%;
+            }
+        }
+    }
+
+    .edit-section {
+        .edit {
+            .buttons {
+                width: 70%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 481px) and (max-width: 1000px) {
+
+    .delete-window {
+        width: 50%;
+    }
+
+    .tasks-list {
+        .task-item {
+            .delete-button {
+                right: 15px;
+                width: 5%;
+            }
+        }
+    }
+}
+
+@media screen and (min-width: 2000px) and (max-width: 2600px) {
+    .base-form {
+        width: 80%;
+        margin: 10px auto;
+        display: flex;
+        height: 250px;
+
+        .input-section {
+            .input-element {
+                height: 45%;
+            }
+        }
+    }
+
+    h3 {
+        font-size: 36px;
+    }
+
+    p {
+        font-size: 30px;
+    }
+
+    ul {
+        margin: 5px auto;
+        width: 80%;
+        height: auto;
+
+        & .task-item {
+            height: 100px;
+        }
+    }
+
+    .task-menu {
+        button {
+            width: 50px;
+            height: 50px;
+        }
+    }
+
+    .share-section {
+        .menu {
+            height: 150px;
+            width: 50%;
+        }
+    }
+
+    .delete-window {
+        height: 250px;
+        width: 25%;
+
+        p {
+            font-size: 40px;
+        }
+
+        button {
+            height: 40px;
+            width: 20%;
+        }
+    }
+
+    .edit-section {
+        .edit {
+            top: 50%;
+            right: 15%;
+            left: 15%;
+
+            & .edit-elements {
+                height: 90%;
+            }
+        }
+    }
+}
