@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react'; 
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import ShareModal from '../modals/ShareModal';
 import EditTaskModal from '../modals/EditTaskModal';
-import TaskItem from './TaskItem';
 import { deleteTaskFromLocalStorage } from '../storage/LocalStorage';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { addTask } from './AddTask';
 import EditTask from './EditTask';
+import InputSection from './InputSection';
+import AddButton from './AddButton';
+import NoTasks from './NoTasks';
+import DragNDrop from './DragNDrop';
+import ConfirmModal from '../modals/ConfirmModal';
 
 Modal.setAppElement('#root');
 
@@ -27,14 +30,13 @@ const MainSection = () => {
         setNoTasksVisible(tasks.length === 0);
     }, [tasks]);
 
-
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             addTask(title, description, setTasks, setTitle, setDescription, setNoTasksVisible);
         }
     };
 
-    // окно удаления 
+    // окно удаления
     const openDelete = (taskId) => {
         setTaskIdToDelete(taskId);
         setDeleteWindowOpen(true);
@@ -52,7 +54,7 @@ const MainSection = () => {
     };
 
 
-    // меню задачи 
+    // меню задачи
     const toggleTaskMenu = (taskId) => {
         if (openedTaskId === taskId) {
             setOpenedTaskId(null);
@@ -64,7 +66,7 @@ const MainSection = () => {
     };
 
 
-    // окно для поделиться 
+    // окно для поделиться
     const openShareModal = (task) => {
         setSelectedTask(task);
         setShowShareModal(true);
@@ -74,19 +76,16 @@ const MainSection = () => {
         setShowShareModal(false);
     };
 
-
     // окно для редактирования 
     const handleEditClick = (task) => {
         setCurrentTask(task);
         setEditModalOpen(true);
     };
 
-
     const onDragEnd = (result) => {
         if (!result.destination) {
             return;
         }
-
         const reorderedTasks = Array.from(tasks);
         const [movedTask] = reorderedTasks.splice(result.source.index, 1);
         reorderedTasks.splice(result.destination.index, 0, movedTask);
@@ -97,69 +96,37 @@ const MainSection = () => {
     return (
         <div className="main-section">
             <div className="base-form">
-                <div className="input-section">
-                    <input
-                        type="text"
-                        name="title-field"
-                        className="title input-element"
-                        placeholder="Title..."
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                    <input
-                        type="text"
-                        name="description-field"
-                        className="description input-element"
-                        placeholder="About..."
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                    />
-                </div>
-                <button className="add-button" onClick={() => addTask(title, description, setTasks, setTitle, setDescription, setNoTasksVisible)}></button>
+                <InputSection
+                    title={title}
+                    description={description}
+                    setTitle={setTitle}
+                    setDescription={setDescription}
+                    handleKeyPress={handleKeyPress}
+                />
+                <AddButton
+                    onClick={() => addTask(title, description, setTasks, setTitle, setDescription, setNoTasksVisible)}
+                />
             </div>
+           
             {noTasksVisible ? (
-                <div className="no-tasks">
-                    <p>No Tasks</p>
-                </div>
+                <NoTasks />
             ) : (
-                <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable droppableId="taskList">
-                        {(provided) => (
-                            <ul
-                                className="tasks-list"
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
-                            >
-                                {tasks.map((task, index) => (
-                                    <TaskItem
-                                        key={task.id}
-                                        task={task}
-                                        index={index}
-                                        openedTaskId={openedTaskId}
-                                        toggleTaskMenu={toggleTaskMenu}
-                                        openShareModal={openShareModal}
-                                        handleEditClick={handleEditClick}
-                                        openDelete={openDelete}
-                                    />
-                                ))}
-                                {provided.placeholder}
-                            </ul>
-                        )}
-                    </Droppable>
-                </DragDropContext>
+                <DragNDrop
+                    tasks={tasks}
+                    openedTaskId={openedTaskId}
+                    toggleTaskMenu={toggleTaskMenu}
+                    openShareModal={openShareModal}
+                    handleEditClick={handleEditClick}
+                    openDelete={openDelete}
+                    onDragEnd={onDragEnd}
+                />
             )}
-
-            <Modal
+            <ConfirmModal
                 isOpen={isDeleteWindowOpen}
                 onRequestClose={onCancel}
-                className="delete-window"
-                overlayClassName="background"
-            >
-                <p>Delete this task?</p>
-                <button onClick={deleteTask}>Yes</button>
-                <button onClick={onCancel}>No</button>
-            </Modal>
+                onConfirm={deleteTask}
+                message="Delete this task?"
+            />
 
             {showShareModal && (
                 <ShareModal
