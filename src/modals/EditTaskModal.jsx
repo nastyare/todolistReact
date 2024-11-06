@@ -6,6 +6,10 @@ const EditTaskModal = ({ onClose, taskTitle, taskDescription, onSave }) => {
     const modalRef = useRef();
 
     const handleSave = () => {
+        if (!title.trim() || !description.trim()) {
+            alert("Title and description cannot be empty.");
+            return;
+        }
         onSave(title, description); 
         onClose();
     };
