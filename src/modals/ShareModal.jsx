@@ -14,9 +14,9 @@ const ShareModal = ({ onClose, title, fullDescription }) => {
     const handleCopy = () => {
         const taskText = `${title} ${fullDescription}`;
         navigator.clipboard.writeText(taskText).then(() => {
-            alert('Текст успешно скопирован');
+            alert('Text is copied');
         }).catch(err => {
-            console.error('Что-то пошло не так: ', err);
+            console.error('something went wrong: ', err);
         });
     };
 

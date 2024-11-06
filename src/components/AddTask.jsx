@@ -11,6 +11,6 @@ export const addTask = (title, description, setTasks, setTitle, setDescription, 
         setDescription('');
         setNoTasksVisible(false);
     } else {
-        alert("Должны быть заполнены и название, и описание");
+        alert("Title and description cannot be empty.");
     }
 };
