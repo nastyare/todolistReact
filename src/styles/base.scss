@@ -11,11 +11,11 @@ $TEXT_COLOR: #F0E3CA;
 
 * {
     box-sizing: border-box;
+    font-weight: 400;
+    font-family: Roboto, sans-serif;
 }
 
 body {
-    font-family: Roboto, sans-serif;
-    font-weight: 400;
     background-color: $BACKGROUND_COLOR;
 }
 
