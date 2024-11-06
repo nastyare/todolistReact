@@ -9,7 +9,7 @@ const ConfirmModal = ({ isOpen, onRequestClose, onConfirm, message }) => {
             className="delete-window"
             overlayClassName="background"
         >
-            <p>{message}</p>
+            <p>Delete this task?</p>
             <button onClick={onConfirm}>Yes</button>
             <button onClick={onRequestClose}>No</button>
         </Modal>

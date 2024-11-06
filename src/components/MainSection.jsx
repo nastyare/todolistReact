@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import ShareModal from '../modals/ShareModal';
 import EditTaskModal from '../modals/EditTaskModal';
-import { deleteTaskFromLocalStorage } from '../storage/LocalStorage';
-import { addTask } from './AddTask';
-import EditTask from './EditTask';
+import { saveTasksToLocalStorage, loadTasksFromLocalStorage, deleteTaskFromLocalStorage } from '../storage/LocalStorage';
+import { addTask } from '../functions/addTask';
+import saveTask from '../functions/editTask';
 import InputSection from './InputSection';
 import AddButton from './AddButton';
 import NoTasks from './NoTasks';
@@ -16,18 +16,19 @@ Modal.setAppElement('#root');
 const MainSection = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const { tasks, setTasks, handleSave } = EditTask();
+    const [tasks, setTasks] = useState(loadTasksFromLocalStorage());
     const [noTasksVisible, setNoTasksVisible] = useState(tasks.length === 0);
     const [isDeleteWindowOpen, setDeleteWindowOpen] = useState(false);
     const [taskIdToDelete, setTaskIdToDelete] = useState(null);
     const [openedTaskId, setOpenedTaskId] = useState(null);
-    const [showShareModal, setShowShareModal] = useState(false);
+    const [isShareModalOpen, setShowShareModal] = useState(false);
     const [selectedTask, setSelectedTask] = useState({});
     const [isEditModalOpen, setEditModalOpen] = useState(false);
     const [currentTask, setCurrentTask] = useState({ title: '', description: '' });
 
     useEffect(() => {
         setNoTasksVisible(tasks.length === 0);
+        saveTasksToLocalStorage(tasks);
     }, [tasks]);
 
     const handleKeyPress = (event) => {
@@ -37,7 +38,7 @@ const MainSection = () => {
     };
 
     // окно удаления
-    const openDelete = (taskId) => {
+    const openDeleteWindow = (taskId) => {
         setTaskIdToDelete(taskId);
         setDeleteWindowOpen(true);
     };
@@ -48,14 +49,13 @@ const MainSection = () => {
         setDeleteWindowOpen(false);
     };
 
-    const onCancel = () => {
+    const closeDeleteWindow = () => {
         setDeleteWindowOpen(false);
         setTaskIdToDelete(null);
     };
 
-
     // меню задачи
-    const toggleTaskMenu = (taskId) => {
+    const taskMenu = (taskId) => {
         if (openedTaskId === taskId) {
             setOpenedTaskId(null);
         } else {
@@ -65,21 +65,23 @@ const MainSection = () => {
         }
     };
 
-
     // окно для поделиться
     const openShareModal = (task) => {
         setSelectedTask(task);
         setShowShareModal(true);
+        setOpenedTaskId(null);
     };
 
     const closeShareModal = () => {
         setShowShareModal(false);
+        setOpenedTaskId(null);
     };
 
     // окно для редактирования 
-    const handleEditClick = (task) => {
+    const openEditModal = (task) => {
         setCurrentTask(task);
         setEditModalOpen(true);
+        setOpenedTaskId(null);
     };
 
     const onDragEnd = (result) => {
@@ -114,21 +116,20 @@ const MainSection = () => {
                 <DragNDrop
                     tasks={tasks}
                     openedTaskId={openedTaskId}
-                    toggleTaskMenu={toggleTaskMenu}
+                    taskMenu={taskMenu}
                     openShareModal={openShareModal}
-                    handleEditClick={handleEditClick}
-                    openDelete={openDelete}
+                    openEditModal={openEditModal}
+                    openDeleteWindow={openDeleteWindow}
                     onDragEnd={onDragEnd}
                 />
             )}
             <ConfirmModal
                 isOpen={isDeleteWindowOpen}
-                onRequestClose={onCancel}
+                onRequestClose={closeDeleteWindow}
                 onConfirm={deleteTask}
-                message="Delete this task?"
             />
 
-            {showShareModal && (
+            {isShareModalOpen && (
                 <ShareModal
                     onClose={closeShareModal}
                     title={selectedTask.title}
@@ -141,7 +142,7 @@ const MainSection = () => {
                     onClose={() => setEditModalOpen(false)}
                     taskTitle={currentTask.title}
                     taskDescription={currentTask.description}
-                    onSave={(newTitle, newDescription) => handleSave(currentTask, newTitle, newDescription)}
+                    onSave={(newTitle, newDescription) => saveTask(currentTask, newTitle, newDescription)}
                 />
             )}
         </div>

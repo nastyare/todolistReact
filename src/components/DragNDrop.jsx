@@ -2,7 +2,7 @@ import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import TaskItem from './TaskItem';
 
-const DragNDrop = ({ tasks, openedTaskId, toggleTaskMenu, openShareModal, handleEditClick, openDelete, onDragEnd }) => (
+const DragNDrop = ({ tasks, openedTaskId, taskMenu, openShareModal, openEditModal, openDeleteWindow, onDragEnd }) => (
     <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="taskList">
             {(provided) => (
@@ -13,10 +13,10 @@ const DragNDrop = ({ tasks, openedTaskId, toggleTaskMenu, openShareModal, handle
                             task={task}
                             index={index}
                             openedTaskId={openedTaskId}
-                            toggleTaskMenu={toggleTaskMenu}
+                            taskMenu={taskMenu}
                             openShareModal={openShareModal}
-                            handleEditClick={handleEditClick}
-                            openDelete={openDelete}
+                            openEditModal={openEditModal}
+                            openDeleteWindow={openDeleteWindow}
                         />
                     ))}
                     {provided.placeholder}

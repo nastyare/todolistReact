@@ -5,11 +5,20 @@ const TaskItem = ({
     task,
     index,
     openedTaskId,
-    toggleTaskMenu,
+    taskMenu,
     openShareModal,
-    handleEditClick,
-    openDelete
+    openEditModal,
+    openDeleteWindow
 }) => {
+
+    const isTaskOpened = () => (
+        <div className="task-menu">
+            <button className="share-button" onClick={() => openShareModal(task)}></button>
+            <button className="info-button"></button>
+            <button className="edit-button" onClick={() => openEditModal(task)}></button>
+        </div>
+    );
+
     return (
         <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
             {(provided) => (
@@ -20,20 +29,14 @@ const TaskItem = ({
                     className={`task-item ${openedTaskId === task.id ? 'expanded' : ''}`}
                 >
                     <div
-                        onClick={() => toggleTaskMenu(task.id)}
+                        onClick={() => taskMenu(task.id)}
                         className={`task-content ${openedTaskId === task.id ? 'expanded' : ''}`}
                     >
                         <h3>{task.title}</h3>
                         <p>{task.description.length > 80 ? task.description.substring(0, 80) + '...' : task.description}</p>
                     </div>
-                    {openedTaskId === task.id && (
-                        <div className="task-menu">
-                            <button className="share-button" onClick={() => openShareModal(task)}></button>
-                            <button className="info-button"></button>
-                            <button className="edit-button" onClick={() => handleEditClick(task)}></button>
-                        </div>
-                    )}
-                    <button className="delete-button" onClick={() => openDelete(task.id)}></button>
+                    {openedTaskId === task.id && isTaskOpened()}
+                    <button className="delete-button" onClick={() => openDeleteWindow(task.id)}></button>
                 </li>
             )}
         </Draggable>
