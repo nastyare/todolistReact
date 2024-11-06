@@ -6,7 +6,11 @@ export const addTask = (title, description, setTasks, setTitle, setDescription, 
         const taskId = Date.now();
         const newTask = { id: taskId, title: trimmedTitle, description: trimmedDescription };
 
-        setTasks(prevTasks => [...prevTasks, newTask]);
+        setTasks(prevTasks => {
+            const updatedTasks = [...prevTasks, newTask];
+            return updatedTasks;
+        });
+        
         setTitle('');
         setDescription('');
         setNoTasksVisible(false);
@@ -14,3 +18,4 @@ export const addTask = (title, description, setTasks, setTitle, setDescription, 
         alert("Title and description cannot be empty.");
     }
 };
+
