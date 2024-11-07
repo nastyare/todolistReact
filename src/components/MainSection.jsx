@@ -142,7 +142,7 @@ const MainSection = () => {
                     onClose={() => setEditModalOpen(false)}
                     taskTitle={currentTask.title}
                     taskDescription={currentTask.description}
-                    onSave={(newTitle, newDescription) => saveTask(currentTask, newTitle, newDescription)}
+                    onSave={(newTitle, newDescription) => saveTask(currentTask, newTitle, newDescription, setTasks)}
                 />
             )}
         </div>
