@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import ShareModal from '../modals/ShareModal';
 import EditTaskModal from '../modals/EditTaskModal';
-import { saveTasksToLocalStorage, loadTasksFromLocalStorage, deleteTaskFromLocalStorage } from '../storage/LocalStorage';
+import { saveTasksToLocalStorage, loadTasksFromLocalStorage, deleteTaskFromLocalStorage } from '../storage/localStorage';
 import { addTask } from '../functions/addTask';
-import saveTask from '../functions/editTask';
+import editTask from '../functions/editTask';
 import InputSection from './InputSection';
 import AddButton from './AddButton';
 import NoTasks from './NoTasks';
@@ -33,7 +33,7 @@ const MainSection = () => {
 
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
-            addTask(title, description, setTasks, setTitle, setDescription, setNoTasksVisible);
+            addTask(title, description, setTitle, setDescription, setTasks, setNoTasksVisible);
         }
     };
 
@@ -95,6 +95,8 @@ const MainSection = () => {
         setTasks(reorderedTasks);
     };
 
+    const isDisabled = !title.trim() || !description.trim();
+
     return (
         <div className="main-section">
             <div className="base-form">
@@ -106,7 +108,7 @@ const MainSection = () => {
                     handleKeyPress={handleKeyPress}
                 />
                 <AddButton
-                    onClick={() => addTask(title, description, setTasks, setTitle, setDescription, setNoTasksVisible)}
+                    onClick={isDisabled ? null : () => addTask(title, description, setTitle, setDescription, setTasks, setNoTasksVisible)}
                 />
             </div>
            
@@ -142,7 +144,7 @@ const MainSection = () => {
                     onClose={() => setEditModalOpen(false)}
                     taskTitle={currentTask.title}
                     taskDescription={currentTask.description}
-                    onSave={(newTitle, newDescription) => saveTask(currentTask, newTitle, newDescription, setTasks)}
+                    onSave={(newTitle, newDescription) => editTask(currentTask, newTitle, newDescription, setTasks)}
                 />
             )}
         </div>
