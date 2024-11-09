@@ -1,4 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
+import copyTask from '../functions/copyTask'; 
+import useOutsideClick from '../hooks/useOutsideClick';
 
 const ShareModal = ({ onClose, title, fullDescription }) => {
     const modalRef = useRef(); 
@@ -11,27 +13,7 @@ const ShareModal = ({ onClose, title, fullDescription }) => {
         { src: '../src/assets/images/facebook.svg', alt: 'Facebook', class: 'facebook' }
     ];
 
-    const handleCopy = () => {
-        const taskText = `${title} ${fullDescription}`;
-        navigator.clipboard.writeText(taskText).then(() => {
-            alert('Text is copied');
-        }).catch(err => {
-            console.error('something went wrong: ', err);
-        });
-    };
-
-    const handleClickOutside = (event) => {
-        if (modalRef.current && !modalRef.current.contains(event.target)) {
-            onClose(); 
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside); 
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside); 
-        };
-    }, []);
+    useOutsideClick(modalRef, onClose);
 
     return (
         <div className="share-section background">
@@ -43,7 +25,7 @@ const ShareModal = ({ onClose, title, fullDescription }) => {
                                 className={image.class}
                                 src={image.src}
                                 alt={image.alt}
-                                onClick={image.class === 'copy' ? handleCopy : undefined} 
+                                onClick={image.class === 'copy' ? () => copyTask(title, fullDescription) : undefined} 
                             />
                         </li>
                     ))}
@@ -54,3 +36,4 @@ const ShareModal = ({ onClose, title, fullDescription }) => {
 };
 
 export default ShareModal;
+

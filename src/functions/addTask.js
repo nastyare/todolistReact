@@ -1,4 +1,4 @@
-export const addTask = (title, description, setTasks, setTitle, setDescription, setNoTasksVisible) => {
+export const addTask = (title, description, setTitle, setDescription, setTasks, setNoTasksVisible) => {
     const trimmedTitle = title.trim();
     const trimmedDescription = description.trim();
 
@@ -14,8 +14,6 @@ export const addTask = (title, description, setTasks, setTitle, setDescription, 
         setTitle('');
         setDescription('');
         setNoTasksVisible(false);
-    } else {
-        alert("Title and description cannot be empty.");
-    }
+    } 
 };
 

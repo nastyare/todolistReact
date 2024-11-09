@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import useOutsideClick from '../hooks/useOutsideClick';
 
 const EditTaskModal = ({ onClose, taskTitle, taskDescription, onSave }) => {
     const [title, setTitle] = useState(taskTitle);
@@ -14,18 +15,9 @@ const EditTaskModal = ({ onClose, taskTitle, taskDescription, onSave }) => {
         onClose();
     };
 
-    const handleClickOutside = (event) => {
-        if (modalRef.current && !modalRef.current.contains(event.target)) {
-            onClose(); 
-        }
-    };
+    useOutsideClick(modalRef, onClose);
 
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside); 
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside); 
-        };
-    }, []);
+    const isDisabled = !title.trim() || !description.trim();
 
     return (
         <div className="edit-section background">
@@ -46,7 +38,7 @@ const EditTaskModal = ({ onClose, taskTitle, taskDescription, onSave }) => {
                 </div>
                 <div className="buttons">
                     <button className="cancel" onClick={onClose}>Cancel</button>
-                    <button className="save" onClick={handleSave}>Save</button>
+                    <button className="save" onClick={handleSave} disabled={isDisabled}>Save</button>
                 </div>
             </div>
         </div>

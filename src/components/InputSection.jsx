@@ -17,7 +17,7 @@ const InputSection = ({ title, description, setTitle, setDescription, handleKeyP
             placeholder="About..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
         />
     </div>
 );

@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-const ConfirmModal = ({ isOpen, onRequestClose, onConfirm, message }) => {
+const ConfirmModal = ({ isOpen, onRequestClose, onConfirm }) => {
     return (
         <Modal
             isOpen={isOpen}

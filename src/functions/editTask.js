@@ -1,6 +1,6 @@
-import { saveTasksToLocalStorage } from '../storage/LocalStorage';
+import { saveTasksToLocalStorage } from '../storage/localStorage';
 
-const saveTask = (currentTask, newTitle, newDescription, setTasks) => {    
+const editTask = (currentTask, newTitle, newDescription, setTasks) => {    
     setTasks(prevTasks => {
         const updatedTasks = prevTasks.map(task =>
             task.title === currentTask.title
@@ -12,4 +12,4 @@ const saveTask = (currentTask, newTitle, newDescription, setTasks) => {
     });
 };
 
-export default saveTask;
+export default editTask;

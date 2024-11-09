@@ -5,10 +5,8 @@ import './styles/base.scss';
 
 function App() { 
   return (
-    <div>
-      <MainSection /> 
-    </div>
-  );
+    <MainSection /> 
+  ); 
 }
 
 export default App;
