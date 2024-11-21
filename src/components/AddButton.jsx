@@ -1,7 +1,5 @@
-import React from 'react';
+import React from 'react'
 
-const AddButton = ({ onClick }) => (
-    <button className="add-button" onClick={onClick}/>
-);
+const AddButton = ({ onClick }) => <button className='add-button' onClick={onClick} />
 
-export default AddButton;
+export default AddButton
